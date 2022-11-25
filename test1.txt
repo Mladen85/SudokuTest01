@@ -1,0 +1,18 @@
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//  TODO
+-----------------------------------------------------------------------------------
+After release 0.1.x in sudoku_tupes.h in struct Element_t change from **sudokuTable
+to sudokuTable[SUDOKU_NUM][SUDOKU_NUM] and go through code and clean it up
+-----------------------------------------------------------------------------------
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+//Command for preprocessor compile
+gcc -Wall -std=gnu99 -I../inc -E File.c -o File.i
+
+gcc -Wall -std=gnu99 -I../lib/inc -E ../lib/src/File.c -o ../lib/src/File.i
+
+//Remove File.i
+rm -f ../lib/src/File.i
+
