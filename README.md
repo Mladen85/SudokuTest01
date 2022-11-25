@@ -12,7 +12,33 @@ all to list.
 During solving sudoku it is possible to check if user solution
 is correct at any time.
 
-## How to fix remote: error: GH007: Your push would publish a private email address
+# Branching:
+## `master` branch
+Will be used for release version.
+
+## `development` branch
+Will be used during development.<br>
+Release versions will be merged to `master` branch.
+
+## `feature-XXX` branch
+Will be used for feature adding.<br>
+Feature complete will be merged to `development` branch.<br>
+`feature-XXX` branch will be deleted after merge.
+
+## `plan-upd-XXX` branch
+Will be used to update planning documents.<br>
+will be merged to `master` branch.<br>
+`plan-upd-XXX` branch will be deleted after merge.
+
+## `path-X.X.X` branch
+Will be used in case project is split to different development paths.
+
+# TODO list
+[ ] Create SW architecture
+[ ] Add source files (Initialize project)
+[ ] Development phase
+
+# How to fix remote: error: GH007: Your push would publish a private email address
 1. Open Terminal.
 
 2. Change the current working directory to the local repository where you want to configure the email address that you associate with your Git commits.
@@ -21,14 +47,14 @@ is correct at any time.
 
 4. Set an email address in Git. Use your GitHub-provided no-reply email address.
 - Setting your email address for every repository on your computer
-- `git config --global user.email "{ID}+{username}@users.noreply.github.com"`
+    `git config --global user.email "{ID}+{username}@users.noreply.github.com"`
 
 - Setting your email address for a single repository
-- `git config user.email "{ID}+{username}@users.noreply.github.com"`
+    `git config user.email "{ID}+{username}@users.noreply.github.com"`
 
 5. Reset the author information on your last commit:
-- `git commit --amend --reset-author`
+    `git commit --amend --reset-author`
 - If you have multiple commits with your private e-mail address, see this answer.
 
 6. Now you can push the commit with the noreply e-mail address, and future commits will have the noreply e-mail address as well.
-- `git push -u origin master`
+    `git push -u origin master`
