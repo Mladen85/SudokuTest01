@@ -12,26 +12,33 @@ all to list.
 During solving sudoku it is possible to check if user solution
 is correct at any time.
 
-# Branching
-## master branch
+# Branching:
+## `master` branch
 Will be used for release version.
 
-## development
+## `development` branch
 Will be used during development.<br>
 Release versions will be merged to `master` branch.
 
-## feature-XXX
+## `feature-XXX` branch
 Will be used for feature adding.<br>
 Feature complete will be merged to `development` branch.<br>
 `feature-XXX` branch will be deleted after merge.
 
-## plan-upd-XXX
+## `plan-upd-XXX` branch
 Will be used to update planning documents.<br>
 will be merged to `master` branch.<br>
 `plan-upd-XXX` branch will be deleted after merge.
 
-## path-X.X.X
+## `path-X.X.X` branch
 Will be used in case project is split to different development paths.
+
+
+# TODO list
+[ ] Create SW architecture
+[ ] Add source files (Initialize project)
+[ ] Development phase
+
 
 # How to fix remote: error: GH007: Your push would publish a private email address
 1. Open Terminal.
