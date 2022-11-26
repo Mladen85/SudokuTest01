@@ -33,10 +33,12 @@ will be merged to `master` branch.<br>
 ## `path-X.X.X` branch
 Will be used in case project is split to different development paths.
 
+
 # TODO list
 [ ] Create SW architecture
 [ ] Add source files (Initialize project)
 [ ] Development phase
+
 
 # How to fix remote: error: GH007: Your push would publish a private email address
 1. Open Terminal.
