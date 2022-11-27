@@ -7,7 +7,7 @@
 ################################################################
 ## LIBRARY
 # Library path
-LIB_DIR = ../lib
+LIB_DIR = ../dev_app
 
 # Library include
 INC_LIB_DIR = inc
@@ -24,15 +24,17 @@ TARGET = sudoku_app
 SRC_APP = $(wildcard *.c)
 
 # Application object
-OBJ_APP_DIR = obj
+OBJ_APP_DIR = .
 OBJ_APP = $(patsubst %,$(OBJ_APP_DIR)/%, $(SRC_APP:.c=.o))
 ################################################################
 
 ################################################################
 # Defining compiler, compiler flags and linker flags
 CC = gcc
-CFLAGS_APP = -Wall -std=gnu99 -I$(LIB_DIR)/$(INC_LIB_DIR)
-LFLAGS_APP = -l$(LIB) -L$(LIB_DIR)
+#CFLAGS_APP = -Wall -std=gnu99 -I$(LIB_DIR)/$(INC_LIB_DIR)
+CFLAGS_APP = -Wall -std=gnu99 
+#LFLAGS_APP = -l$(LIB) -L$(LIB_DIR)/$(INC_LIB_DIR)
+LFLAGS_APP = 
 ################################################################
 
 ################################################################
