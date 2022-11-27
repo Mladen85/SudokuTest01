@@ -19,7 +19,7 @@
 
 #define SUDOKU_AREA 3
 
-#define SHUFLE_NUM 3
+#define SHUFFLE_NUM 3
 
 #define MAXREPEAT 100
 

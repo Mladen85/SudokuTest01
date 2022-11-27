@@ -18,45 +18,43 @@
 
 
 
-extern List_Element_t *head;
+//List_Element_t *head;
 
 
-static List_Element_t *p_st_Element = NULL;
+// static List_Element_t *p_st_Element = NULL;
 
+// List_Element_t *List_st_NewElement(uint8 pp_ui8_sudTable[SUDOKU_NUM][SUDOKU_NUM], uint32 ui32_Id)
+// {
+//     p_st_Element = calloc(1, sizeof(List_Element_t));
+//     p_st_Element->sudokuTable = pp_ui8_sudTable;
+//     p_st_Element->tableID = ui32_Id;
+//     p_st_Element->next = NULL;
 
-List_Element_t *List_st_NewElement(uint8 **pp_ui8_sudTable, uint32 ui32_Id)
+//     return p_st_Element;
+// }
+
+List_Element_t *List_st_AddToBeginning(List_Element_t **head, List_Element_t *pp_st_addElement)
 {
-    p_st_Element = calloc(1, sizeof(List_Element_t));
-    p_st_Element->sudokuTable = pp_ui8_sudTable;
-    p_st_Element->tableID = ui32_Id;
-    p_st_Element->next = NULL;
+    pp_st_addElement->next = *head;
+    *head = pp_st_addElement;
 
-    return p_st_Element;
+    return *head;
 }
 
-
-List_Element_t *List_st_AddToBegining(List_Element_t **pp_st_addElement)
+void List_v_AddToEndOfList(List_Element_t *head, List_Element_t *p_st_addElement)
 {
-    (*pp_st_addElement)->next = head;
+    //List_Element_t *p_st_currentElement = head;
 
-    return *pp_st_addElement;
-}
-
-
-void List_v_AddToEndOfList(List_Element_t *p_st_addElement)
-{
-    List_Element_t *p_st_currentElement = head;
-
-    while (p_st_currentElement->next)
+    while (head->next)
     {
-        p_st_currentElement = p_st_currentElement->next;
+        head = head->next;
     }
-    p_st_currentElement->next = p_st_addElement;
+    head->next = p_st_addElement;
 }
 
 
 ///Function adds new element to n-th place. If n > no_elements returns -1 else returns 1
-///If adding to begining of te list use function List_Element_t *AddToBegining(List_Element_t *addElement)
+///If adding to beginning of te list use function List_Element_t *AddToBeginning(List_Element_t *addElement)
 sint8 AddToNthPlace(List_Element_t *p_st_currentElement, List_Element_t *p_st_addElement, uint32 ui32_Id)
 {
     uint32 ui32_index = 0;
@@ -114,29 +112,27 @@ List_Element_t *LastElement(List_Element_t *current)
     return current;
 }
 
-
-void PrintList(List_Element_t *current)
+void List_v_PrintList(List_Element_t *head)
 {
-    while (current)
+    while (head)
     {
 #if (SUDOKU_CONSOLE == STD_ON)
-        printf("\n\nSudoku table number: %d", current->tableID + 1);
+        printf("\n\nSudoku table number: %d\n", head->tableID + 1);
 #endif
-        ShowSudokuTable(current->sudokuTable);
-        current = current->next;
+        ShowSudokuTable(head->sudokuTable);
+        head = head->next;
     }
 }
 
-
-uint32 DeleteNthElement(uint32 n)
+uint32 DeleteNthElement(List_Element_t **head, uint32 n)
 {
-    List_Element_t *current = head, *previous = NULL;
+    List_Element_t *current = *head, *previous = NULL;
     uint32 i = 0, j = -1;
 
     //If n = 0 delete head
     if (n == 0)
     {
-        head = head->next;
+        *head = (*head)->next;
         free(current);
         j = 1;
     }
@@ -163,18 +159,18 @@ uint32 DeleteNthElement(uint32 n)
     return j;
 }
 
-
-void ClearList(void)
+void ClearList(List_Element_t **head)
 {
     List_Element_t *current = NULL;
 
-    while (head)
+    while (*head)
     {
-        current = head;
-        head = head->next;
+        current = *head;
+        *head = (*head)->next;
         free(current);
         current = NULL;
     }
+    *head = NULL;
 }
 
 
@@ -182,3 +178,17 @@ void ClearList(void)
 // #ifdef SUDOKU_INFO_MESSAGE_PRINT_LIST(msg_type, msg_val)
 //   #undef SUDOKU_INFO_MESSAGE_PRINT_LIST(msg_type, msg_val)
 // #endif
+
+void ShowSudokuTable(uint8 sudokuTable[SUDOKU_NUM][SUDOKU_NUM])
+{
+    uint8 i = 0, j = 0;
+    printf("SHOWSUDOKUTABLE_STUB\n");
+    for (i = 0; i<SUDOKU_NUM; i++)
+    {
+        for (j = 0; j < SUDOKU_NUM; j++)
+        {
+            printf("%d ", sudokuTable[i][j]);
+        }
+        printf("\n");
+    }
+}
