@@ -43,6 +43,36 @@ Tree like:<br>
 [Issue](https://github.com/Mladen85/SudokuTest01/issues/7) for this path is created.
 <br><br>
 
+# `path-00.01.00`
+In this project branch is saved old project structure.
+
+## Description
+Because of fixing bugs New project structure is considered (simple one).<br>
+After working version of project reconsider setting project structure like in this branch.
+
+Note that initial source code files are from `master` init state.
+
+Tree like:
+-dev_app/
+ |-inc/
+ |-obj/
+ |-src/
+ |-Makefile
+-lib/
+ |-inc/
+ |-obj/
+ |-src/
+ |-lib<library>.a
+ |-Makefile
+-user_app/
+ |-main.c
+ |-test.c
+ |-Makefile
+
+## Issue
+[Issue](https://github.com/Mladen85/SudokuTest01/issues/7) for this path is created.
+
+
 # Branching:
 ## `master` branch
 Will be used for release version.
