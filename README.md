@@ -11,6 +11,37 @@ all to list.
 
 During solving sudoku it is possible to check if user solution
 is correct at any time.
+<br><br>
+
+# `path-00.01.00`
+In this project branch is saved old project structure.
+
+## Description
+Because of fixing bugs New project structure is considered (simple one).<br>
+After working version of project reconsider setting project structure like in this branch.
+
+Note that initial source code files are from `master` init state.
+
+Tree like:<br>
+-dev_app/<br>
+ |-inc/<br>
+ |-obj/<br>
+ |-src/<br>
+ |-Makefile<br>
+-lib/<br>
+ |-inc/<br>
+ |-obj/<br>
+ |-src/<br>
+ |-libLIBNAME.a<br>
+ |-Makefile<br>
+-user_app/<br>
+ |-main.c<br>
+ |-test.c<br>
+ |-Makefile<br>
+
+## Issue
+[Issue](https://github.com/Mladen85/SudokuTest01/issues/7) for this path is created.
+<br><br>
 
 # Branching:
 ## `master` branch
@@ -30,14 +61,15 @@ Will be used to update planning documents.<br>
 will be merged to `master` branch.<br>
 `plan-upd-XXX` branch will be deleted after merge.
 
-## `path-X.X.X` branch
+## `path-XX.XX.XX` branch
 Will be used in case project is split to different development paths.
 
 
 # TODO list
-[ ] Create SW architecture
-[ ] Add source files (Initialize project)
-[ ] Development phase
+- [ ] Create SW architecture
+- [ ] Add source files (Initialize project)
+- [ ] Development phase
+- [ ] Add explanation for Tags
 
 
 # How to fix remote: error: GH007: Your push would publish a private email address
