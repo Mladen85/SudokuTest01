@@ -12,6 +12,19 @@ all to list.
 During solving sudoku it is possible to check if user solution
 is correct at any time.
 
+
+# `development`
+## Issues
+- [ ] [Loading data from file to list](https://github.com/Mladen85/SudokuTest01/issues/9)
+- 
+
+## TODOs
+- [ ] Generate new sudoku.
+- [ ] Prepare sudoku for solving.
+- [ ] Find all possible solutions.
+- [ ] Create main menu.
+
+
 # Branching:
 ## `master` branch
 Will be used for release version.
@@ -30,14 +43,14 @@ Will be used to update planning documents.<br>
 will be merged to `master` branch.<br>
 `plan-upd-XXX` branch will be deleted after merge.
 
-## `path-X.X.X` branch
+## `path-XX.XX.XX` branch
 Will be used in case project is split to different development paths.
 
 
 # TODO list
-[ ] Create SW architecture
-[ ] Add source files (Initialize project)
-[ ] Development phase
+- [ ] Create SW architecture<br>
+- [ ] Add source files (Initialize project)<br>
+- [ ] Development phase<br>
 
 
 # How to fix remote: error: GH007: Your push would publish a private email address
