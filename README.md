@@ -12,15 +12,18 @@ all to list.
 During solving sudoku it is possible to check if user solution
 is correct at any time.
 
-# Compile and Run
-## Compile and Run project
-Execute commands from repository root folder:
+# Build and Run
+**Makefile** in root directory is still under development.<br>
+Use below commands to build and run project.
+## Build and Run project
+Execute commands from repository root directory:
 ```
 cd user_app
+cp dat_bkp1.txt dat.txt
 make run
 ```
-## Compile project
-Execute commands from repository root folder:
+## Build project
+Execute commands from repository root directory:
 ```
 cd user_app
 make
@@ -33,20 +36,23 @@ make all
 `all` is default rule<br>
 (because of line `all : $(TARGET)`)
 ## Run project
-Execute commands from repository root folder:
+Execute commands from repository root directory:
 ```
 cd user_app
+cp dat_bkp1.txt dat.txt
 ./sudoku_app.exe
 ```
 or
 ```
 cd user_app
+cp dat_bkp1.txt dat.txt
 make run
 ```
 
 # `development`
 ## Issues
 - [ ] [Loading data from file to list](https://github.com/Mladen85/SudokuTest01/issues/9)
+- [ ] [Makefile in root directory](https://github.com/Mladen85/SudokuTest01/issues/10)
 - 
 
 ## TODOs
@@ -84,6 +90,9 @@ Will be used in case project is split to different development paths.
 - [ ] Development phase<br>
 
 
+# How to format .md files
+[Format README.md file](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)
+
 # How to fix remote: error: GH007: Your push would publish a private email address
 1. Open Terminal.
 
@@ -104,3 +113,4 @@ Will be used in case project is split to different development paths.
 
 6. Now you can push the commit with the noreply e-mail address, and future commits will have the noreply e-mail address as well.
     `git push -u origin master`
+
