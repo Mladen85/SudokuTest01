@@ -1,6 +1,7 @@
-#define _GNU_SOURCE
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
+#include <inttypes.h>
 #include "sudoku_defs.h"
 #include "sudoku_File.h"
 #include "sudoku_List.h"
@@ -41,67 +42,122 @@
 
 //static List_Element_t *p_st_Element = NULL;
 
-static ssize_t GetLine(char **linePtr, size_t *n, FILE *stream);
+static Std_ReturnType GetLine(char *linePtr, size_t *n, const FILE **stream);
 
-static ssize_t GetLine(char **linePtr, size_t *n, FILE *stream)
+static Std_ReturnType GetSudokuTable(uint8_t sudokuTable[SUDOKU_NUM][SUDOKU_NUM], uint32_t *tableID, const FILE **stream);
+
+static Std_ReturnType GetLine(char *linePtr, size_t *n, const FILE **stream)
 {
+	Std_ReturnType ret_val = E_OK;
 	char c;
-	ssize_t read = 0;
+	int32_t read = 0;
 
-	if(*n == 0)
+	//if(*n == 0)
+	//{
+	//	*n = SUDOKU_NUM;
+	//	*linePtr = (char*)malloc(*n * sizeof(char));
+	//}
+	//else if(*n < 0)
+	//{
+	//	return E_EXC_INVALID_ARG;
+	//}
+	//else  // *n is positive number, but linePtr is NULL, return error
+	//{
+	//	// if(!(*linePtr))
+	//	// {
+	//	// 	return -1;
+	//	// }
+	//}
+
+	if(linePtr == NULL)
 	{
-		*n = SUDOKU_NUM;
-		*linePtr = (char*)malloc(*n * sizeof(char));
-	}
-	else if(*n < 0)
-	{
-		return -1;
-	}
-	else  // *n is positive number, but linePtr is NULL, return error
-	{
-		// if(!(*linePtr))
-		// {
-		// 	return -1;
-		// }
+		return E_EXC_INVALID_ARG;
 	}
 
-	if(*linePtr == NULL)
-	{
-		return -1;
-	}
-
-	printf("GetLine pre-while loop, *n = %d\n(file %s, line %d)\n", *n, __FILE__, __LINE__);
-	c = fgetc(stream);
+	printf("GetLine pre-while loop, *n = %llu\n(file %s, line %d)\n", *n, __FILE__, __LINE__);
+	c = fgetc(*stream);
 	printf("GetLine pre-while loop, c = %d\n\n", c);
-	while (*linePtr && ( c != '\n' ) && ( c != EOF ))
+	while (( c != '\n' ) && ( c != EOF ))
 	{
 		printf("GetLine while loop, read = %d\n(file %s, line %d)\n", read, __FILE__, __LINE__);
-		(*linePtr)[read] = c;
+		linePtr[read] = c;
 		read++;
 
-		if(read > *n)
-		{
-			*n = (read * sizeof(char)) + (10 * sizeof(char));
-			*linePtr = (char *)realloc(*linePtr, *n);
-		}
+		//if(read > *n)
+		//{
+		//	*n = (read * sizeof(char)) + (10 * sizeof(char));
+		//	*linePtr = (char *)realloc(*linePtr, *n);
+		//}
 
-		c = fgetc(stream);
+		c = fgetc(*stream);
 		printf("GetLine while loop, c = %d\n", c);
 	}
 
 	if(read == 0)
 	{
-		*linePtr == NULL;
-		return -1;
+		linePtr == NULL;
+		return E_NOT_OK;
 	}
 	else if(read < *n)
 	{
 		*n = read * sizeof(char);
-		*linePtr = (char *)realloc(*linePtr, *n);
+		//*linePtr = (char *)realloc(*linePtr, *n);
 	}
 
 	printf("return %d\n\n", read);
-	return read;
+	return E_OK;
+}
+
+static Std_ReturnType GetSudokuTable(uint8_t sudokuTable[SUDOKU_NUM][SUDOKU_NUM], uint32_t* tableID, const FILE** stream)
+{
+	Std_ReturnType ret_val = E_OK;
+	int i, j = 0;
+	char tableNum[9]; // There might be 9x9! = 3.265.920 posible solutions, so prepare space for 9 characters
+					  //  'S' + 7 difit number + ':' = 9
+	size_t n = 9;
+	uint32_t sum = 0;
+
+	//printf("Start reading file!\n(file %s, line %d)\n\n", __FILE__, __LINE__);
+	ret_val = GetLine(tableNum, &n, stream);
+	if (E_OK != ret_val)
+	{
+		return ret_val;
+	}
+	else if (tableNum[0] != 'S')
+	{
+		return E_DATA_CORUPTED;
+	}
+	else
+	{
+		// If everything is OK, continue executing function
+		//  equivalent as if rest of the function is in else statement
+	}
+
+	for (i = 1; i < (n - 1); i++)
+	{
+		sum += (tableNum[i] - 48);
+		if (i < (n - 2))
+		{
+			sum *= 10;
+		}
+	}
+	*tableID = sum;
+
+	n = 9;
+	for (i = 0; i < SUDOKU_NUM; i++)  //First row is sudoku order number
+	{
+		ret_val = GetLine(&sudokuTable[i][0], &n, stream);
+		if (E_OK != ret_val)
+		{
+			return ret_val;
+		}
+		for (j = 0; j < SUDOKU_NUM; j++)
+		{
+			sudokuTable[i][j] -= 48;
+		}
+	}
+
+	return E_OK;
 }
 
 void File_v_SafeDatOpen(FILE **pFile_sudokuFile, char *pstr_dat_name, char *pstr_dat_mode)
@@ -272,7 +328,7 @@ void File_v_DatToList(FILE *pFile_sudokuFile, List_Element_t **head)
 	uint32 ui32_Id = 0;
 	char c, *line = NULL;
 	size_t len = SUDOKU_NUM * sizeof(char);
-	ssize_t read;
+	Std_ReturnType result = E_OK;
 	uint32 lineRead = 0, sudokuRow = 0, j = 0;
 	boolean sudokuFound = FALSE;
 
@@ -336,47 +392,67 @@ void File_v_DatToList(FILE *pFile_sudokuFile, List_Element_t **head)
 		// }
 		#endif /* #if 0 */
 
-		line = (char *)malloc(len);
-		while ((read = GetLine(&line, &len, pFile_sudokuFile)) != -1)
-		{
-			p_st_Element = NULL;
-			p_st_Element = (List_Element_t *)malloc(sizeof(List_Element_t));
-			printf("sizeof(*p_st_Element = %u\n", sizeof(*p_st_Element));
-			if(read < SUDOKU_NUM)
-			{
-				if (line[0] != 'S')
-				{
-					break;
-				}
-				else
-				{
-					len = SUDOKU_NUM * sizeof(char);
-					lineRead++;
-					continue;
-				}
-			}
-			else if(read == SUDOKU_NUM)
-			{
-				while(sudokuRow != (SUDOKU_NUM - 1))
-				{
-					sudokuRow = lineRead % 10 - 1;
-					printf("File_v_DatToList:\n");
-					printf("lineRead = %d\nsudokuRow = %d\n", lineRead, sudokuRow);
-					if((sudokuRow < 0) || (sudokuRow >= SUDOKU_NUM))
-					{
-						break;
-					}
 
-					for (j = 0; j < SUDOKU_NUM; j++)
-					{
-						printf("line[j] = %d\n", line[j]);
-						p_st_Element->sudokuTable[sudokuRow][j] = line[j] - 48;
-					}
-					printf("j = %d\nchar = %c -> %d\n", j, line[j], line[j]);
-					lineRead++;
-				}
+		line = (char *)malloc(len);
+		while (E_OK == result)
+		{
+#if 0
+			//printf("sizeof(*p_st_Element) = %u\n", sizeof(*p_st_Element));
+			//if (read < SUDOKU_NUM)
+			//{
+			//	if (line[0] != 'S')
+			//	{
+			//		break;
+			//	}
+			//	else
+			//	{
+			//		len = SUDOKU_NUM * sizeof(char);
+			//		lineRead++;
+			//		continue;
+			//	}
+			//}
+			//else if (read == SUDOKU_NUM)
+			//{
+			//	//while(sudokuRow != (SUDOKU_NUM - 1))
+			//	//{
+			//	sudokuRow = lineRead % 10 - 1;
+			//	printf("File_v_DatToList:\n");
+			//	printf("lineRead = %d\nsudokuRow = %d\n", lineRead, sudokuRow);
+			//	if ((sudokuRow < 0) || (sudokuRow >= SUDOKU_NUM))
+			//	{
+			//		break;
+			//	}
+
+			//	p_st_Element = NULL;
+			//	p_st_Element = (List_Element_t*)malloc(sizeof(List_Element_t));
+
+			//	for (j = 0; j < SUDOKU_NUM; j++)
+			//	{
+			//		printf("line[j] = %d\n", line[j]);
+			//		p_st_Element->sudokuTable[sudokuRow][j] = line[j] - 48;
+			//	}
+			//	printf("j = %d\nchar = %c -> %d\n", j, line[j], line[j]);
+			//	lineRead++;
+			//	//}
+			//}
+			//else
+			//{
+			//	break;
+			//}
+#endif /* 0 */
+			p_st_Element = NULL;
+			p_st_Element = (List_Element_t*)malloc(sizeof(List_Element_t));
+
+			if (NULL != p_st_Element)
+			{
+				printf("Start reading file!\n(file %s, line %d)\n\n", __FILE__, __LINE__);
+				result = GetSudokuTable(p_st_Element->sudokuTable, &ui32_Id, &pFile_sudokuFile);
 			}
-			else
+			else // If failed to take memory, go back to start of while loop and try again
+			{
+				continue;
+			}
+			if (E_OK != result)
 			{
 				break;
 			}
@@ -384,7 +460,7 @@ void File_v_DatToList(FILE *pFile_sudokuFile, List_Element_t **head)
 			p_st_Element->tableID = ui32_Id;
 			p_st_Element->next = NULL;
 
-			ui32_Id++;
+			//ui32_Id++;
 			printf("%d times\n", ui32_Id);
 
 			if (*head == NULL)
@@ -395,6 +471,9 @@ void File_v_DatToList(FILE *pFile_sudokuFile, List_Element_t **head)
 			{
 				List_v_AddToEndOfList(*head, p_st_Element);
 			}
+
+			//p_st_Element = NULL;
+			//p_st_Element = (List_Element_t *)malloc(sizeof(List_Element_t));
 		}
 	}
 	else

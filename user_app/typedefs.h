@@ -20,6 +20,18 @@
     #define STD_OFF 0
   #endif /* STD_OFF */
 
+  //#ifndef E_OK
+  //  #define E_OK 0
+  //#endif /* E_OK */
+
+  //#ifndef E_NOT_OK
+  //  #define E_NOT_OK 1
+  //#endif /* E_NOT_OK */
+
+  //#ifndef E_EXEPTION_NULL_PTR
+  //  #define E_EXEPTION_NULL_PTR 2
+  //#endif /* E_EXEPTION_NULL_PTR */
+
   #ifndef TRUE
     #define TRUE 1
   #endif /* TRUE */
@@ -56,5 +68,13 @@
   //unsigned integer 32-bit
   typedef unsigned int uint32;
 
+  typedef enum RetType
+  {
+      E_OK              = 0,
+      E_NOT_OK          = 1,
+      E_EXC_NULL_PTR    = 2,
+      E_EXC_INVALID_ARG = 3,
+      E_DATA_CORUPTED   = 4,
+  } Std_ReturnType;
 
 #endif /* __TYPEDEFS_H__ */
